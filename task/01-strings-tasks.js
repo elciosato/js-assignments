@@ -240,7 +240,7 @@ function getRectangleString(width, height) {
         const cornersAmount = 2;
         return `${LeftUpperCorner}${drawHorizontalLine(width - cornersAmount)}${RightUpperCorner}\n`
     }
-    function drawMiddleLine(width, lines){
+    function drawMiddleLines(width, lines){
         const sidesAmount = 2;
         let resultLines = ''
         for (let line=0;line<lines;line++){
@@ -253,7 +253,7 @@ function getRectangleString(width, height) {
         return `${LeftLowerCorner}${drawHorizontalLine(width - cornersAmount)}${RightLowerCorner}\n`
     }
 
-    return `${drawFirstLine(width)}${drawMiddleLine(width,height-2)}${drawLastLine(width)}`
+    return `${drawFirstLine(width)}${drawMiddleLines(width,height-2)}${drawLastLine(width)}`
 }
 
 
@@ -273,7 +273,29 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-    throw new Error('Not implemented');
+    const firstPart = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('')
+    const secondPart = 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'.split('')
+    const NOT_FOUND = '0'
+    function encode(letter, firstArray, secondArray) {
+        const index = firstArray.findIndex(firstPartLetter => firstPartLetter === letter)
+        if (index > 0) {
+            return secondArray[index]
+        } else {
+            return NOT_FOUND
+        }
+    }
+    let resultString = ''
+    for (let letter of str){
+        let result = encode(letter, firstPart, secondPart)
+        if (result === NOT_FOUND) {
+            result = encode(letter, secondPart, firstPart)
+            if (result === NOT_FOUND) {
+                result = letter
+            }
+        }
+        resultString = resultString + result
+    }
+    return resultString
 }
 
 /**
