@@ -207,64 +207,52 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-    function getLeftUpperCorner(){
-        return '┌'
+    const LeftUpperCorner = '┌'
+    const RightUpperCorner = '┐'
+    const LeftLowerCorner = '└'
+    const RightLowerCorner = '┘'
+    const VerticalLine = '│'
+    const HorizontalLine = '─'
+    const Space = ' '
+    const minWidth = 2
+    const minHeight = 2
+
+    if (width < minWidth || 
+        height < minHeight) {
+        return null
     }
-    function getRightUpperCorner(){
-        return '┐'
-    }
-    function getLeftLowerCorner(){
-        return '└'
-    }
-    function getRightLowerCorner(){
-        return '┘'
-    }
-    function getVerticalLine(){
-        return '│'
-    }
-    function getHorizontalLine(){
-        return '─'
-    }
-    function getSpace(){
-        return ' '
-    }
+
     function drawHorizontalLine(horizontalLineWidth) {
         let line = ''
         for (let position=0;position < horizontalLineWidth; position++) {
-            line = line + getHorizontalLine()
+            line = line + HorizontalLine
         }
         return line
     }
     function drawHorizontalSpace(horizontalSpaceWidth) {
         let line = ''
         for (let position=0;position < horizontalSpaceWidth; position++) {
-            line = line + getSpace()
+            line = line + Space
         }
         return line
     }
     function drawFirstLine(width){
         const cornersAmount = 2;
-        return `${getLeftUpperCorner()}${drawHorizontalLine(width - cornersAmount)}${getRightUpperCorner()}\n`
+        return `${LeftUpperCorner}${drawHorizontalLine(width - cornersAmount)}${RightUpperCorner}\n`
     }
     function drawMiddleLine(width, lines){
         const sidesAmount = 2;
         let resultLines = ''
         for (let line=0;line<lines;line++){
-            resultLines = resultLines + `${getVerticalLine()}${drawHorizontalSpace(width - sidesAmount)}${getVerticalLine()}\n`
+            resultLines = resultLines + `${VerticalLine}${drawHorizontalSpace(width - sidesAmount)}${VerticalLine}\n`
         }
         return resultLines
     }
     function drawLastLine(width){
         const cornersAmount = 2;
-        return `${getLeftLowerCorner()}${drawHorizontalLine(width - cornersAmount)}${getRightLowerCorner()}\n`
+        return `${LeftLowerCorner}${drawHorizontalLine(width - cornersAmount)}${RightLowerCorner}\n`
     }
 
-    const minWidth = 2
-    const minHeight = 2
-    if (width < minWidth || 
-        height < minHeight) {
-        return null
-    }
     return `${drawFirstLine(width)}${drawMiddleLine(width,height-2)}${drawLastLine(width)}`
 }
 
